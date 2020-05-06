@@ -9,10 +9,11 @@ import agenday.Main_AgenDay;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author LENOVO
+ * @author MErvanNugraha
  */
 public class V_Menu extends javax.swing.JFrame {
 
@@ -28,16 +29,15 @@ public class V_Menu extends javax.swing.JFrame {
         dataKelas();
     }
     
+    //Fungsi untuk menge-set kelas apa yang di agenda kan
     public void dataKelas(){
         String hari = Main_AgenDay.hari_sekarang();
         String nip = V_Login.login.getUsername();
         
         try{
             Statement stmt = Main_AgenDay.con.createStatement();
-            
-            String query = "SELECT * FROM jadwal_ajar WHERE NIP = " + nip +" AND hari = '" + hari + "'";
+            String query = "SELECT * FROM jadwal_ajar WHERE NIP = '" + nip +"' AND hari = '" + hari + "'";
             ResultSet rs = stmt.executeQuery(query);
-            cmbKelas.addItem("-Pilih Kelas-");
             
             while(rs.next()){
                 cmbKelas.addItem(rs.getString("ngajar_kls"));
@@ -107,6 +107,12 @@ public class V_Menu extends javax.swing.JFrame {
         waktu.setText("Waktu");
 
         cmbKelas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbKelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--------PILIH KELAS--------" }));
+        cmbKelas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbKelasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -297,9 +303,7 @@ public class V_Menu extends javax.swing.JFrame {
 
     private void AgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgendaActionPerformed
         // TODO add your handling code here:
-        V_TambahAgenda agenda = new V_TambahAgenda();
-        agenda.setVisible(true);
-        this.setVisible(false);
+        Main_AgenDay.guru.cekmengisi(this);
     }//GEN-LAST:event_AgendaActionPerformed
 
     private void JadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JadwalActionPerformed
@@ -331,10 +335,18 @@ public class V_Menu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        V_RiwayatAgenda riwayat = new V_RiwayatAgenda();
-        riwayat.setVisible(true);
-        this.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Coming Soon :)");
+//        V_RiwayatAgenda riwayat = new V_RiwayatAgenda();
+//        riwayat.setVisible(true);
+//        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbKelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbKelasActionPerformed
+        // TODO add your handling code here:
+        String text;
+        text = (String)cmbKelas.getSelectedItem();
+        Main_AgenDay.namaKelas(text);
+    }//GEN-LAST:event_cmbKelasActionPerformed
 
     /**
      * @param args the command line arguments

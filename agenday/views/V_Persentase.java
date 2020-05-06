@@ -10,7 +10,7 @@ import agenday.Kelas;
 
 /**
  *
- * @author swan
+ * @author AnggaSaputra
  */
 public class V_Persentase extends javax.swing.JFrame {
 
@@ -149,6 +149,7 @@ public class V_Persentase extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
         String text;
+        
         text = (String)jComboBox1.getSelectedItem();
         kelas.setNamaKelas(text);
     }//GEN-LAST:event_jComboBox1ActionPerformed

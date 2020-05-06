@@ -12,7 +12,7 @@ import java.sql.Statement;
 import javax.swing.DefaultListModel;
 /**
  *
- * @author LENOVO
+ * @author MErvanNugraha
  */
 public class V_Jadwal extends javax.swing.JFrame {
 
@@ -29,29 +29,29 @@ public class V_Jadwal extends javax.swing.JFrame {
         Main_AgenDay.tanggal_sekarang(tgl);
     }
     
+    //Dibuat Oleh Ramdan Rohendi
+    //Fungsi untuk menampilkan data dai database ke layout
     public void TampilData(){
         String hari = Main_AgenDay.hari_sekarang();
-        String namaGuru = "Tidak Ada";
-        String mapel = "Tidak Ada";
-
+        
         try{
             Statement stmt = Main_AgenDay.con.createStatement();
-            String nip = V_Login.login.getUsername();
+            String nip = Main_AgenDay.guru.getNIP();
             
             String query = "SELECT * FROM jadwal_ajar WHERE NIP = " + nip +" AND hari = '" + hari + "'" ;
             ResultSet rs = stmt.executeQuery(query);
             
             while (rs.next()){
-                namaGuru = rs.getString("nama_guru");
-                mapel = rs.getString("nama_mapel");
+                Main_AgenDay.guru.setNama(rs.getString("nama_guru"));
+                Main_AgenDay.guru.setMapel(rs.getString("nama_mapel"));
                 mAjar.addElement("- " + rs.getString("ngajar_kls"));   
                 mJamP.addElement("- " + rs.getString("jam_pelajaran"));
             }
         }catch (SQLException ex){
             ex.printStackTrace();
         }
-        nmGuru.setText(namaGuru);
-        pelajaran.setText(mapel);
+        nmGuru.setText(Main_AgenDay.guru.getNama());
+        pelajaran.setText(Main_AgenDay.guru.getMapel());
         ListAjar.setModel(mAjar);
         ListJamP.setModel(mJamP);
     }

@@ -10,14 +10,14 @@ import agenday.Main_AgenDay;
 
 /**
  *
- * @author LENOVO
+ * @author MErvanNugraha
  */
 public class V_Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
      */
-    static Login login = new Login();
+    public static Login login = new Login();
     public V_Login() {
         initComponents();
         Main_AgenDay.koneksi();

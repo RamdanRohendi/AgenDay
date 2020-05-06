@@ -9,14 +9,11 @@ import agenday.Main_AgenDay;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author LENOVO
+ * @author MErvanNugraha
  */
 public class V_TambahAgenda extends javax.swing.JFrame {
 
@@ -26,100 +23,32 @@ public class V_TambahAgenda extends javax.swing.JFrame {
     public V_TambahAgenda() {
         initComponents();
         Main_AgenDay.koneksi();
-        Main_AgenDay.tanggal_sekarang(txtTgl);//Ini buat ngisi tanggal otomatis
+        Main_AgenDay.tanggal_sekarang(txtTgl);
         showdata();
     }
     
+    //Dibuat Oleh Zahy Habibi
+    //Fungsi Untuk Menampilkan beberapa data dari database
     DefaultTableModel dtm;
     public void showdata(){
-//        Karena Cuman Buat showdata aja kita ambil 3 dan isi value default nya
-        String mapel = "Mata Pelajaran";
-        String namaGuru = "Guru";
-        String kelas = "Kelas";
+        String kelas = Main_AgenDay.kelas.getNamaKelas();
         
-        /** Dua ini Enggak Usah Karena Bukan Memakai Tabel ( di View nya ) :
-         * String[] kolom ={"cttn", "id_agenday", "id_kelas", "kd_mapel", "tanggal"};
-         * dtm = new DefaultTableModel (null, kolom);
-         */
         try{
             Statement stmt = Main_AgenDay.con.createStatement();
-            String nip = V_Login.login.getUsername();//Buat ngambil data guru sementara karena login belum dibuat 
-            //Nama database nya jadi yang view dan tambah where biar gampang ngambil datanya
+            String nip = Main_AgenDay.guru.getNIP();
             String query = "SELECT * FROM data_agenda WHERE NIP = '" + nip + "'";
             ResultSet rs = stmt.executeQuery(query);
-            /** Ini juga enggak usah ada
-             * int no = 1;
-             */
             
             while(rs.next()){
-                /** Yang ini nama dari variabelnya sesuain sama desainnya aja
-                 *  Dan buat variabelnya diluar try ini
-                 *  Tapi Diisinya disini
-                 * String cttn = rs.getString("catatan");
-                 * String id_agenday = rs.getNString("id_agenday");
-                 * String id_kelas = rs.getString("id_kelas");
-                 * String kd_mapel = rs.getString("kd_mapel");
-                 * String tanggal = rs.getString("tanggal");
-                 */
-                
-                mapel = rs.getString("nama_mapel");
-                namaGuru = rs.getString("nama_guru");
-                kelas = rs.getString("nama_kelas");
-                
-                /** Ini Enggak Usah Ada karena bukan memakai tabel
-                * dtm.addRow(new String[]{no + cttn,id_agenday,id_kelas,kd_mapel,tanggal});
-                */
-                
-                /** Ini juga
-                 * no++;
-                 */
+                Main_AgenDay.guru.setNama(rs.getString("nama_guru"));
+                Main_AgenDay.guru.setMapel(rs.getString("nama_mapel"));
             }
         }catch(SQLException ex){
             ex.printStackTrace();
         }
-//        Ini buat ngeset text nya biar nampil auto
-        txtMapel.setText(mapel);
-        txtGuru.setText(namaGuru);
+        txtMapel.setText(Main_AgenDay.guru.getMapel());
+        txtGuru.setText(Main_AgenDay.guru.getNama());
         txtKls.setText(kelas);
-    }
-    
-    public void simpanData(){
-        String nip = V_Login.login.getUsername();
-        String kd_mapel = "mapel";
-        String tanggal = txtTgl.getText();
-        String id_kelas = "kelas";
-        String cttn = txtCttn.getText();
-        
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat day = new SimpleDateFormat("EEEE");
-        String hari = day.format(cal.getTime());
-        
-        try{
-            Statement stmt = Main_AgenDay.con.createStatement();
-            String queryguru = "SELECT * FROM guru WHERE NIP = '"+nip+"'";
-            String queryajar = "SELECT * FROM jdwl_ajar WHERE NIP = '"+nip+"' AND hari = '"+hari+"'";
-            ResultSet rsg = stmt.executeQuery(queryguru);
-            while(rsg.next()){
-                kd_mapel = rsg.getString("kd_mapel");
-            }
-            ResultSet rsa = stmt.executeQuery(queryajar);
-            while(rsa.next()){
-                id_kelas = rsa.getString("id_kelas");
-            }
-            
-            String query = "INSERT INTO agenday (id_kelas,kd_mapel,tanggal,cttn)" + "VALUES"
-                    + "('"+id_kelas+"','"+kd_mapel+"','"+tanggal+"','"+cttn+"')";
-            System.out.println(query);
-            int berhasil = stmt.executeUpdate(query);
-            if(berhasil == 1){
-                JOptionPane.showMessageDialog(null,"Data Behasil Masuk");
-            }else{
-                JOptionPane.showMessageDialog(null,"Data Gagal Dimasukan");
-            }
-        }catch (SQLException ex){
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null,"Terjadi Kesalahan Pada Database");
-        }
     }
 
     /**
@@ -333,10 +262,11 @@ public class V_TambahAgenda extends javax.swing.JFrame {
 
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
         // TODO add your handling code here:
+        Main_AgenDay.guru.MengisiAgenda(txtTgl, txtCttn);
+        
         V_Agenda view = new V_Agenda();
         view.setVisible(true);
         this.setVisible(false);
-        simpanData();
     }//GEN-LAST:event_SubmitActionPerformed
 
     /**

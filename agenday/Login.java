@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author LENOVO
+ * @author RamdanRohendi
  */
 public class Login {
     private String username;
@@ -35,6 +35,8 @@ public class Login {
         return password;
     }
     
+    //Dibuat oleh Zahy Habibi
+    //Fungsi untuk mengecek login/validasi data
     public void cekLogin(String User, String Pass, V_Login Vlogin){
         try {
             Statement stmt = Main_AgenDay.con.createStatement();
@@ -42,15 +44,16 @@ public class Login {
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next()){
                 if(User.equals(rs.getString("username")) && Pass.equals(rs.getString("paswword"))){
-                    JOptionPane.showMessageDialog(null, "Login Berhasil !!!");
+                    JOptionPane.showMessageDialog(null, "Berhasil Log-in");
                     V_Menu menu = new V_Menu();
                     setUsername(User);
+                    Main_AgenDay.guru.setNIP(User);
                     menu.setVisible(true);
                     Vlogin.setVisible(false);
                 }
             }
             else{
-                JOptionPane.showMessageDialog(null, "Username atau Password anda salah !!!");
+                JOptionPane.showMessageDialog(null, "Log-in gagal");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(Vlogin, e.getMessage());

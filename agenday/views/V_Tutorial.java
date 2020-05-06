@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author LENOVO
+ * @author NezarianSaputra
  */
 public class V_Tutorial extends javax.swing.JFrame {
 
@@ -112,7 +112,7 @@ public class V_Tutorial extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(gbrTutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(gbrTutor)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,9 +128,9 @@ public class V_Tutorial extends javax.swing.JFrame {
     private void nextMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextMousePressed
         // TODO add your handling code here:
         position = position +1;
-        if(position >= ambilgambar().length)
+        if(position > 7)
         {
-            position = ambilgambar().length-1;
+            position = 7;
         }
         show(position);
     }//GEN-LAST:event_nextMousePressed
@@ -138,7 +138,7 @@ public class V_Tutorial extends javax.swing.JFrame {
     private void backMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMousePressed
         // TODO add your handling code here:
         position = position -1;
-        if(position<0)
+        if(position < 0)
         {
             position = 0;
         }

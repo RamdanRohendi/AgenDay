@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author swan
+ * @author AnggaSaputra
  */
 public class V_Rekab extends javax.swing.JFrame {
 
@@ -28,6 +28,8 @@ public class V_Rekab extends javax.swing.JFrame {
         showData();
     }
     
+    //Dibuat oleh Ramdan Rohendi
+    //Fungsi untuk menampilkan data dari database ke layout
     DefaultTableModel dtm;
     public void showData(){
         String [] kolom = {"No", "NIS", "Nama", "JK", "Sakit","Izin","Alpha","Jumlah Kehadiran","Persentase Kehadiran"};
@@ -47,8 +49,11 @@ public class V_Rekab extends javax.swing.JFrame {
                 String sakit = rs.getString("sakit");
                 String izin = rs.getString("izin");
                 String alpha = rs.getString("alpha");
+                int isakit = rs.getInt("sakit");
+                int iizin = rs.getInt("izin");
+                int ialpha = rs.getInt("alpha");
                 
-                dtm.addRow(new String[] {no + ". ", nis, nama, jk, sakit, izin, alpha, valueOf(jmlhkehadiran()), persentase() });
+                dtm.addRow(new String[] {no + ". ", nis, nama, jk, sakit, izin, alpha, valueOf(jmlhkehadiran(isakit, iizin, ialpha)), persentase() });
                 no++;
             }
         }catch (SQLException ex){
@@ -57,13 +62,15 @@ public class V_Rekab extends javax.swing.JFrame {
         tblSiswa.setModel(dtm);
     }
     
-    int jmlharipembljrn = 28;
+    //Dibuat Oleh Nezarian Saputra
+    //Fungsi-fungsi untuk menghitung persentase kehadiran
+    int jmlharipembljrn = 150;
     int jmlhadir;
     float persen;
     
-    public int jmlhkehadiran() {
+    public int jmlhkehadiran(int s, int i, int a) {
         
-        jmlhadir = (int) (jmlharipembljrn-(1/*panggil sakit, izin, alphana*/));
+        jmlhadir = (int) (jmlharipembljrn-( s + i + a ));
         
         return jmlhadir;
     }
